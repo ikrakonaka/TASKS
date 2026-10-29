@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lexicon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black: #050505;
+    --black-soft: #0f0f0f;
+    --wine: #5c0a14;
+    --wine-light: #7a121e;
+    --parchment: #e3dbce;
+    --parchment-dim: #8c857b;
+    --line: #222222;
+    
+    --font-serif: 'Bodoni Moda', serif;
+    --font-sans: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--black);
+    color: var(--parchment);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; padding: 40px 20px 100px; }
+
+  h1, h2, h3 { font-family: var(--font-serif); font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; }
+  h1 { font-size: 28px; color: var(--parchment); text-align: center; margin-bottom: 8px; }
+  .subtitle { text-align: center; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--parchment-dim); margin-bottom: 40px; }
+  h2 { font-size: 18px; color: var(--wine-light); margin: 32px 0 16px; border-bottom: 1px solid var(--wine); padding-bottom: 8px; }
+
+  button {
+    font-family: var(--font-sans); cursor: pointer; border-radius: 0;
+    transition: all 0.2s ease; font-size: 12px; letter-spacing: 0.1em;
+    text-transform: uppercase; font-weight: 500;
+  }
+  
+  .btn { background: var(--wine); color: var(--parchment); border: 1px solid var(--wine); padding: 14px 24px; width: 100%; }
+  .btn:hover { background: var(--black); color: var(--wine-light); border-color: var(--wine); }
+
+  .btn-outline { background: transparent; color: var(--parchment); border: 1px solid var(--line); padding: 12px 20px; }
+  .btn-outline:hover { border-color: var(--wine); color: var(--wine-light); }
+
+  .btn-small { background: transparent; color: var(--parchment-dim); border: 1px solid var(--line); padding: 8px 12px; font-size: 11px; }
+  .btn-small:hover { border-color: var(--parchment); color: var(--parchment); }
+
+  .btn-danger { color: var(--wine-light); border-color: var(--wine); }
+  .btn-danger:hover { background: var(--wine); color: var(--parchment); }
+
+  .tabs { display: flex; gap: 16px; margin-bottom: 30px; border-bottom: 1px solid var(--line); }
+  .tab { padding: 0 0 12px 0; cursor: pointer; font-family: var(--font-serif); font-size: 16px; letter-spacing: 0.1em; color: var(--parchment-dim); border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .tab.active { color: var(--parchment); border-bottom-color: var(--wine); }
+  .tab:hover { color: var(--parchment); }
+
+  .list-item { display: flex; align-items: center; gap: 20px; background: var(--black-soft); border: 1px solid var(--line); padding: 20px; margin-bottom: 12px; cursor: pointer; transition: border-color 0.2s; }
+  .list-item:hover { border-color: var(--wine); }
+  .list-item-static { cursor: default; }
+  .list-item-static:hover { border-color: var(--line); }
+  
+  .roman-num { font-family: var(--font-serif); font-size: 20px; color: var(--parchment-dim); min-width: 40px; text-align: center; border-right: 1px solid var(--line); padding-right: 20px; }
+  .list-info { flex: 1; }
+  .list-title { font-family: var(--font-serif); font-size: 18px; color: var(--parchment); margin-bottom: 4px; }
+  .list-meta { font-size: 12px; color: var(--parchment-dim); letter-spacing: 0.05em; }
+
+  input, select, textarea {
+    font-family: var(--font-sans); font-size: 14px; width: 100%;
+    background: transparent; border: 1px solid var(--line);
+    color: var(--parchment); padding: 14px; margin-bottom: 16px;
+    outline: none; transition: border-color 0.2s;
+  }
+  input:focus { border-color: var(--wine); }
+  input::placeholder { color: #444; font-style: italic; }
+  
+  label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--parchment-dim); margin-bottom: 8px; }
+
+  .row { display: flex; gap: 12px; }
+  .row > * { flex: 1; }
+  .hidden { display: none !important; }
+
+  .trainer-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; }
+  .prompt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--wine-light); margin-bottom: 20px; }
+  .question-text { font-family: var(--font-serif); font-size: 48px; color: var(--parchment); margin-bottom: 40px; line-height: 1.2; }
+
+  .answer-input { max-width: 400px; font-family: var(--font-serif); font-size: 24px; text-align: center; padding: 16px; background: var(--black-soft); border: 1px solid var(--line); }
+  .answer-input:focus { border-color: var(--parchment); }
+  .answer-input.ok { border-color: #4a5c40; color: #c5d4b8; }
+  .answer-input.warn { border-color: #8c6b38; color: #e3c78e; }
+  .answer-input.err { border-color: var(--wine); color: #d98a94; }
+
+  .feedback-text { min-height: 24px; font-family: var(--font-serif); font-size: 16px; letter-spacing: 0.05em; margin: 16px 0; }
+  .feedback-text.ok { color: #c5d4b8; }
+  .feedback-text.warn { color: #e3c78e; }
+  .feedback-text.err { color: #d98a94; }
+
+  .progress-bar { width: 100%; max-width: 400px; height: 2px; background: var(--line); margin-bottom: 40px; }
+  .progress-fill { height: 100%; background: var(--wine); transition: width 0.3s; }
+
+  .flash-scene { perspective: 1200px; width: 100%; max-width: 400px; height: 260px; margin: 0 auto 40px; }
+  .flash-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+  .flash-scene.flipped .flash-inner { transform: rotateY(180deg); }
+  .flash-face { position: absolute; inset: 0; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; flex-direction: column; font-family: var(--font-serif); font-size: 32px; padding: 20px; text-align: center; }
+  .flash-front { background: var(--black-soft); border: 1px solid var(--line); color: var(--parchment); }
+  .flash-back { background: var(--wine); border: 1px solid var(--wine); color: var(--parchment); transform: rotateY(180deg); }
+  .hint-text { font-family: var(--font-sans); font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.5; margin-top: 20px; }
+
+  .btn-audio { font-family: var(--font-sans); font-size: 10px; letter-spacing: 0.1em; background: transparent; border: 1px solid var(--line); color: var(--parchment-dim); padding: 4px 8px; margin-left: 10px; vertical-align: middle; }
+  .btn-audio:hover { border-color: var(--parchment); color: var(--parchment); }
+
+  .divider { width: 40px; height: 1px; background: var(--wine); margin: 40px auto; }
+  
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--parchment); color: var(--black); padding: 12px 24px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 100; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const DB_KEY = 'myVocabDB_v1';
+let db = loadDB();
+let ui = { screen:'home', groupId:null, langFilter:'en', trainer:null };
+
+function loadDB() { try { return JSON.parse(localStorage.getItem(DB_KEY)) || {groups:[], cards:[]}; } catch { return {groups:[], cards:[]}; } }
+function saveDB() { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function toast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2000); }
+
+function toRoman(num) {
+  const roman = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX"];
+  return roman[num-1] || num;
+}
+
+function normalize(s) { return (s||'').toLowerCase().replace(/[.,!?;:、。！？；：'"«»()\[\]{}]/g,'').replace(/\s+/g,' ').trim(); }
+function levenshtein(a,b) {
+  const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  const dp=Array.from({length:m+1},(_,i)=>[i,...Array(n).fill(0)]);
+  for(let j=1;j<=n;j++) dp[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++) dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  return dp[m][n];
+}
+function checkAnswer(user, correct) {
+  const u=normalize(user), c=normalize(correct);
+  if(!u) return 'err'; if(u===c) return 'ok';
+  const dist=levenshtein(u,c);
+  const tolerance = c.length<=3 ? 0 : (c.length<=6 ? 1 : 2);
+  if(dist>0 && dist<=tolerance) return 'warn';
+  return 'err';
+}
+
+function speak(text, lang) {
+  if(!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang==='ko' ? 'ko-KR' : 'en-US';
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+
+const app = document.getElementById('app');
+
+function render() {
+  if(ui.screen==='home') renderHome();
+  else if(ui.screen==='group') renderGroup();
+  else if(ui.screen==='trainMenu') renderTrainMenu();
+  else if(ui.screen==='trainer') renderTrainer();
+}
+
+function renderHome() {
+  const enGroups = db.groups.filter(g=>g.lang==='en');
+  const koGroups = db.groups.filter(g=>g.lang==='ko');
+  const activeLang = ui.langFilter;
+  const groups = activeLang==='en' ? enGroups : koGroups;
+
+  app.innerHTML = `
+    <h1>Lexicon</h1>
+    <div class="subtitle">Библиотека языков</div>
+
+    <div class="tabs">
+      <div class="tab ${activeLang==='en'?'active':''}" onclick="setLang('en')">English</div>
+      <div class="tab ${activeLang==='ko'?'active':''}" onclick="setLang('ko')">Korean</div>
+    </div>
+
+    <div id="groupsList"></div>
+
+    <div class="divider"></div>
+
+    <h2>Новая группа</h2>
+    <div style="margin-bottom:16px;">
+      <label>Название</label>
+      <input id="gName" placeholder="Например: Глаголы, Еда, Бизнес">
+      <button class="btn" onclick="addGroup()">Создать группу</button>
+    </div>
+  `;
+
+  const list = document.getElementById('groupsList');
+  if(!groups.length) {
+    list.innerHTML = `<div style="text-align:center; color:var(--parchment-dim); font-size:12px; letter-spacing:0.1em; padding:20px;">СОЗДАЙТЕ ПЕРВУЮ ГРУППУ</div>`;
+  } else {
+    list.innerHTML = groups.map((g, index) => {
+      const count = db.cards.filter(c=>c.groupId===g.id).length;
+      return `
+      <div class="list-item" onclick="openGroup('${g.id}')">
+        <div class="roman-num">${toRoman(index+1)}</div>
+        <div class="list-info">
+          <div class="list-title">${esc(g.name)}</div>
+          <div class="list-meta">${count} слов</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function renderGroup() {
+  const g = db.groups.find(x=>x.id===ui.groupId);
+  if(!g) { ui.screen='home'; return render(); }
+  const cards = db.cards.filter(c=>c.groupId===g.id);
+
+  app.innerHTML = `
+    <div style="margin-bottom:30px">
+      <button class="btn-small" onclick="goHome()" style="margin-bottom:16px">← Назад</button>
+      <h1 style="text-align:left; font-size:24px">${esc(g.name)}</h1>
+      <div class="subtitle" style="text-align:left; margin-bottom:0">${cards.length} слов · ${g.lang==='en'?'Английский':'Корейский'}</div>
+    </div>
+
+    ${cards.length ? `<button class="btn" style="margin-bottom:24px" onclick="openTrainMenu()">Тренировка</button>` : ''}
+
+    <div id="cardsList">
+      ${cards.length ? cards.map(c=>`
+        <div class="list-item list-item-static" style="align-items:flex-start;">
+          <div class="list-info">
+            <div class="list-title" style="font-size:20px; margin-bottom:6px;">
+              ${esc(c.word)}
+              <button class="btn-audio" onclick="speak('${escAttr(c.word)}','${g.lang}')">AUDIO</button>
+            </div>
+            <div class="list-meta" style="font-size:14px;">${esc(c.translation)}</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-small" onclick="editCard('${c.id}')">Изменить</button>
+            <button class="btn-small btn-danger" onclick="deleteCard('${c.id}')">Удалить</button>
+          </div>
+        </div>
+      `).join('') : `<div style="text-align:center; color:var(--parchment-dim); font-size:12px; padding:20px;">СПИСОК ПУСТ</div>`}
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Добавить слово</h2>
+    <div style="margin-bottom:16px;">
+      <label>${g.lang==='en'?'Слово на английском':'Слово на корейском'}</label>
+      <input id="cWord" placeholder="...">
+      <label>Перевод на русский</label>
+      <input id="cTranslation" placeholder="...">
+      <button class="btn" onclick="addCard()">Сохранить</button>
+    </div>
+  `;
+}
+
+function renderTrainMenu() {
+  const g = db.groups.find(x=>x.id===ui.groupId);
+  const count = db.cards.filter(c=>c.groupId===g.id).length;
+  const foreignShort = g.lang==='en'?'EN':'KO';
+
+  app.innerHTML = `
+    <div style="margin-bottom:30px">
+      <button class="btn-small" onclick="openGroup('${g.id}')" style="margin-bottom:16px">← Назад</button>
+      <h1 style="text-align:left; font-size:24px">Тренировка</h1>
+      <div class="subtitle" style="text-align:left; margin-bottom:0">${esc(g.name)} · ${count} слов</div>
+    </div>
+
+    <div class="list-item" onclick="startFlashcards()">
+      <div class="list-info">
+        <div class="list-title">Флэшкарты</div>
+        <div class="list-meta">Вспомни перевод и переверни карту</div>
+      </div>
+    </div>
+
+    <div class="list-item" onclick="startInput('${foreignShort.toLowerCase()}2ru')">
+      <div class="list-info">
+        <div class="list-title">Ввод ${foreignShort} → RU</div>
+        <div class="list-meta">Напиши перевод на русском</div>
+      </div>
+    </div>
+
+    <div class="list-item" onclick="startInput('ru2${foreignShort.toLowerCase()}')">
+      <div class="list-info">
+        <div class="list-title">Ввод RU → ${foreignShort}</div>
+        <div class="list-meta">Напиши слово на ${g.lang==='en'?'английском':'корейском'}</div>
+      </div>
+    </div>
+  `;
+}
+
+function startFlashcards() {
+  const g = db.groups.find(x=>x.id===ui.groupId);
+  const cards = shuffle(db.cards.filter(c=>c.groupId===g.id));
+  ui.trainer = {type:'flash', cards, idx:0, flipped:false};
+  ui.screen='trainer'; render();
+}
+
+function startInput(mode) {
+  const g = db.groups.find(x=>x.id===ui.groupId);
+  const cards = shuffle(db.cards.filter(c=>c.groupId===g.id));
+  ui.trainer = {type:'input', mode, cards, idx:0, input:'', result:null};
+  ui.screen='trainer'; render();
+}
+
+function renderTrainer() {
+  const t = ui.trainer;
+  if(!t.cards.length) { ui.screen='trainMenu'; return render(); }
+  if(t.type==='flash') return renderFlash();
+  return renderInput();
+}
+
+function renderFlash() {
+  const t = ui.trainer;
+  if(t.idx >= t.cards.length) {
+    app.innerHTML = `
+      <div class="trainer-container">
+        <h2 style="border:none; margin:0 0 16px; font-size:24px;">Круг завершен</h2>
+        <div class="subtitle">Просмотрено ${t.cards.length} карточек</div>
+        <div class="row" style="max-width:300px; width:100%; margin-top:20px">
+          <button class="btn" onclick="startFlashcards()">Заново</button>
+          <button class="btn-outline" onclick="openTrainMenu()">В меню</button>
+        </div>
+      </div>`;
+    return;
+  }
+  const c = t.cards[t.idx];
+
+  app.innerHTML = `
+    <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+      <button class="btn-small" onclick="openTrainMenu()">← Меню</button>
+      <div class="prompt" style="margin:0">${t.idx+1} / ${t.cards.length}</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${(t.idx/t.cards.length)*100}%"></div></div>
+
+    <div class="flash-scene ${t.flipped?'flipped':''}" onclick="flipCard()">
+      <div class="flash-inner">
+        <div class="flash-face flash-front">
+          ${esc(c.word)}
+          <div class="hint-text">Нажмите, чтобы перевернуть</div>
+        </div>
+        <div class="flash-face flash-back">
+          ${esc(c.translation)}
+          <div class="hint-text">Нажмите, чтобы вернуться</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;">
+      <button class="btn-outline" style="max-width:200px" onclick="nextFlash()">Далее →</button>
+    </div>
+  `;
+}
+
+function renderInput() {
+  const t = ui.trainer;
+  const g = db.groups.find(x=>x.id===ui.groupId);
+
+  if(t.idx >= t.cards.length) {
+    app.innerHTML = `
+      <div class="trainer-container">
+        <h2 style="border:none; margin:0 0 16px; font-size:24px;">Завершено</h2>
+        <div class="subtitle">Пройдено ${t.cards.length} слов</div>
+        <div class="row" style="max-width:300px; width:100%; margin-top:20px">
+          <button class="btn" onclick="startInput('${t.mode}')">Заново</button>
+          <button class="btn-outline" onclick="openTrainMenu()">В меню</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const c = t.cards[t.idx];
+  const isRu2Foreign = t.mode.startsWith('ru2');
+  const question = isRu2Foreign ? c.translation : c.word;
+  const correctAnswer = isRu2Foreign ? c.word : c.translation;
+  const resultClass = t.result || '';
+  const feedbackText = t.result==='ok' ? 'ВЕРНО' : t.result==='warn' ? 'ПОЧТИ. ПРОВЕРЬТЕ НАПИСАНИЕ' : t.result==='err' ? `ВЕРНО: ${esc(correctAnswer)}` : '';
+
+  app.innerHTML = `
+    <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+      <button class="btn-small" onclick="openTrainMenu()">← Меню</button>
+      <div class="prompt" style="margin:0">${t.idx+1} / ${t.cards.length}</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${(t.idx/t.cards.length)*100}%"></div></div>
+
+    <div class="trainer-container">
+      <div class="prompt">${isRu2Foreign ? 'Напишите на '+(g.lang==='en'?'английском':'корейском') : 'Напишите на русском'}</div>
+      <div class="question-text">
+        ${esc(question)}
+        ${!isRu2Foreign ? `<button class="btn-audio" onclick="speak('${escAttr(c.word)}','${g.lang}')">AUDIO</button>` : ''}
+      </div>
+
+      <input class="answer-input ${resultClass}" id="ansInput" autocomplete="off" spellcheck="false" value="${escAttr(t.input)}" placeholder="..." ${t.result?'disabled':''}>
+
+      <div class="feedback-text ${resultClass}">${feedbackText}</div>
+
+      <div style="margin-top:10px; width:100%; max-width:300px;">
+        ${!t.result 
+          ? `<button class="btn" onclick="submitAnswer()">Проверить</button>` 
+          : `<button class="btn" onclick="nextInput()">Далее →</button>`}
+      </div>
+    </div>
+  `;
+
+  const inp = document.getElementById('ansInput');
+  if(!t.result) {
+    inp.focus();
+    inp.addEventListener('input', e=>{ t.input = e.target.value; });
+    inp.addEventListener('keydown', e=>{ if(e.key==='Enter') submitAnswer(); });
+  }
+}
+
+function setLang(l) { ui.langFilter=l; render(); }
+function goHome() { ui.screen='home'; ui.groupId=null; render(); }
+function openGroup(id) { ui.groupId=id; ui.screen='group'; render(); }
+function openTrainMenu() { ui.screen='trainMenu'; render(); }
+
+function addGroup() {
+  const input = document.getElementById('gName');
+  const name = input ? input.value.trim() : '';
+  if(!name) { toast('Введите название группы'); return; }
+  db.groups.push({ id: uid(), name, lang: ui.langFilter });
+  saveDB(); toast('Группа создана'); render();
+}
+
+function addCard() {
+  const wordInput = document.getElementById('cWord');
+  const transInput = document.getElementById('cTranslation');
+  const word = wordInput ? wordInput.value.trim() : '';
+  const translation = transInput ? transInput.value.trim() : '';
+  
+  if(!word || !translation) { toast('Заполните оба поля'); return; }
+  
+  db.cards.push({ id: uid(), groupId: ui.groupId, word, translation });
+  saveDB(); toast('Слово сохранено'); 
+  
+  // Очищаем поля после добавления
+  if(wordInput) wordInput.value = '';
+  if(transInput) transInput.value = '';
+  render();
+}
+
+function editCard(id) {
+  const c = db.cards.find(x=>x.id===id);
+  const w = prompt('Слово:', c.word); if(w===null) return;
+  const tr = prompt('Перевод:', c.translation); if(tr===null) return;
+  if(w.trim() && tr.trim()) { c.word=w.trim(); c.translation=tr.trim(); saveDB(); render(); }
+}
+
+function deleteCard(id) {
+  if(!confirm('Удалить это слово?')) return;
+  db.cards = db.cards.filter(x=>x.id!==id); saveDB(); render();
+}
+
+function flipCard() { ui.trainer.flipped = !ui.trainer.flipped; render(); }
+function nextFlash() { ui.trainer.idx++; ui.trainer.flipped = false; render(); }
+
+function submitAnswer() {
+  const t = ui.trainer;
+  const inp = document.getElementById('ansInput');
+  t.input = inp.value;
+  const c = t.cards[t.idx];
+  const isRu2Foreign = t.mode.startsWith('ru2');
+  const correct = isRu2Foreign ? c.word : c.translation;
+  t.result = checkAnswer(t.input, correct);
+  render();
+}
+
+function nextInput() {
+  ui.trainer.idx++; ui.trainer.input = ''; ui.trainer.result = null; render();
+}
+
+function esc(s) { return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function escAttr(s) { return esc(s).replace(/"/g,'&quot;'); }
+function shuffle(a) { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+render();
+</script>
+</body>
+</html>
